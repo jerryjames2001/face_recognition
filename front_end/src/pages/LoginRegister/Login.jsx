@@ -1,40 +1,49 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
-import { CiLock } from 'react-icons/ci'
-import { TfiEmail } from 'react-icons/tfi'
-import img from '../../assets/signin.jpg'
-import { toast, Toaster } from 'react-hot-toast'
+import React, { useState, useContext } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import { CiLock } from 'react-icons/ci';
+import { TfiEmail } from 'react-icons/tfi';
+import img from '../../assets/signin.jpg';
+import { toast, Toaster } from 'react-hot-toast';
+import { UserContext } from '../../../context/UserContext';
 
-function Login () {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
   axios.defaults.withCredentials = true;
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
     try {
       const result = await axios.post('http://localhost:3000/api/login', {
         email,
         password
-      })
+      });
+
       if (result.data.message === 'Success') {
-        toast.success('Login successful!', { duration: 4000 })
-        navigate('/')
+        toast.success('Login successful!', { duration: 4000 });
+        setUser(result.data.user); // Set the user in context (ensure your backend sends user info)
+        navigate('/'); // Redirect to the desired route
       } else {
-        toast.error(result.data.message || 'Login failed', { duration: 4000 })
+        toast.error(result.data.message || 'Login failed', { duration: 4000 });
       }
     } catch (error) {
-      toast.error('Not registered', { duration: 4000 })
-      console.error('Login error:', error)
+      if (error.response) {
+        // Handle specific error responses
+        toast.error(error.response.data.message || 'Login failed. Please try again.', { duration: 4000 });
+      } else {
+        toast.error('Server error. Please try again later.', { duration: 4000 });
+      }
+      console.error('Login error:', error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div
@@ -55,7 +64,6 @@ function Login () {
               onChange={(e) => setEmail(e.target.value)}
             />
             <label
-              htmlFor=''
               className='absolute text-sm text-white duration-300 -translate-y-3 scale-75 top-0 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-5'
             >
               Email
@@ -72,7 +80,6 @@ function Login () {
               onChange={(e) => setPassword(e.target.value)}
             />
             <label
-              htmlFor=''
               className='absolute text-sm text-white duration-300 -translate-y-3 scale-75 top-0 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-5'
             >
               Password
@@ -93,9 +100,10 @@ function Login () {
           <div>
             <button
               type='submit'
-              className='w-full mb-4 mt-6 text-[18px] rounded-full bg-white text-sky-800 hover:bg-sky-400 hover:text-white py-2 transition-colors duration-300'
+              className={`w-full mb-4 mt-6 text-[18px] rounded-full bg-white text-sky-800 hover:bg-sky-400 hover:text-white py-2 transition-colors duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={loading} // Disable button when loading
             >
-              Login
+              {loading ? 'Logging in...' : 'Login'}
             </button>
           </div>
 
@@ -108,9 +116,10 @@ function Login () {
             </span>
           </div>
         </form>
+        <Toaster /> {/* Ensure the Toaster is included to show notifications */}
       </div>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;
