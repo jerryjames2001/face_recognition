@@ -29,7 +29,7 @@ function Login () {
         toast.error(result.data.message || 'Login failed', { duration: 4000 })
       }
     } catch (error) {
-      toast.error('An error occurred. Please try again.', { duration: 4000 })
+      toast.error('Not registered', { duration: 4000 })
       console.error('Login error:', error)
     } finally {
       setLoading(false)
