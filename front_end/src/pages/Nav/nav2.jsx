@@ -42,12 +42,11 @@ function nav2 () {
               >
                 <Link to='/suspects'>Suspects</Link>
               </li>
-              <li
-                type='button'
+              <button
                 className='p-3 bg-blue-500 hover:bg-transparent text-white hover:bg-sky-100 to-transparent mx-4 hover:text-blue-700 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
               >
-                <Link to='/logout'>Log out</Link>
-              </li>
+                Log out
+              </button>
             </ul>
           </div>
         </div>

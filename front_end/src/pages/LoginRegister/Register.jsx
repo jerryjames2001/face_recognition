@@ -1,44 +1,29 @@
 import React, { useState } from 'react'
-
-import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { TfiEmail } from 'react-icons/tfi'
 import { CiUser, CiLock } from 'react-icons/ci'
 import img from '../../assets/signin.jpg'
 import { toast, Toaster } from 'react-hot-toast'
+import { useAuth } from '../../hooks/auth-context'
 
-function Register () {
+function Register() {
+  const {signUp} = useAuth()
   const [name, setName] = useState('')
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    axios
-      .post('http://localhost:3000/api/register', {
-        name,
-        username,
-        email,
-        password
-      })
-      .then((result) => {
-        if (result.data === 'Already have an account') {
-          // alert("Already have an account");
-          toast.dismiss() // removes all the previous toasts
-          toast.error('Already have an account', { duration: 3500 })
-          setTimeout(() => {
-            window.location.reload()
-          }, 4000)
-        } else {
-          toast.success('Account created successfully', { duration: 4000 })
-          toast.success('Please wait for admin approval', { duration: 10000 })
-          navigate('/')
-        }
-      })
-      .catch((error) => console.log('inside the register.jsx error', error))
-  }
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    try {
+      await signUp(name, username, email, password);
+      toast.success('Sign up successful!');
+      toast.success('Please wait for admin approval');
+    } catch (error) {
+      console.log('Error signing up:', error);
+      toast.error('Sign up failed. Please try again.');
+    }
+  };
 
   return (
     <div
@@ -49,7 +34,7 @@ function Register () {
         <h1 className='text-4xl text-whitefont-bold text-center mb-6'>
           Register
         </h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSignUp}>
           <div className='relative my-10'>
             <input
               type='text'

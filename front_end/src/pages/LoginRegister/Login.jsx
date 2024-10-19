@@ -5,46 +5,28 @@ import { CiLock } from 'react-icons/ci';
 import { TfiEmail } from 'react-icons/tfi';
 import img from '../../assets/signin.jpg';
 import { toast, Toaster } from 'react-hot-toast';
-import { UserContext } from '../../../context/UserContext';
+import { useAuth } from '../../hooks/auth-context';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { setUser } = useContext(UserContext);
+  const {signIn} = useAuth()
 
-  axios.defaults.withCredentials = true;
 
-  const handleSubmit = async (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
-      const result = await axios.post('http://localhost:3000/api/login', {
-        email,
-        password
-      });
-
-      if (result.data.message === 'Success') {
-        toast.success('Login successful!', { duration: 4000 });
-        setUser(result.data.user); // Set the user in context (ensure your backend sends user info)
-        navigate('/'); // Redirect to the desired route
-      } else {
-        toast.error(result.data.message || 'Login failed', { duration: 4000 });
-      }
+      await signIn(email, password);
+      toast.success('Login successful!', { duration: 4000 });
+      navigate('/profile');
     } catch (error) {
-      if (error.response) {
-        // Handle specific error responses
-        toast.error(error.response.data.message || 'Login failed. Please try again.', { duration: 4000 });
-      } else {
-        toast.error('Server error. Please try again later.', { duration: 4000 });
-      }
-      console.error('Login error:', error);
-    } finally {
-      setLoading(false);
+      console.error('Error signing in:', error);
+      toast.error('Login failed. Please try again.', { duration: 4000 });
     }
   };
-
+ 
   return (
     <div
       className='text-white font-Poppins flex h-[100vh] justify-center items-center bg-cover min-h-screen'
@@ -54,7 +36,7 @@ function Login() {
         <h1 className='text-4xl text-white font-bold text-center mb-6'>
           Login
         </h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSignIn}>
           <div className='relative my-10'>
             <input
               type='email'

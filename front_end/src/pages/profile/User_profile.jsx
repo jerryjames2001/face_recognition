@@ -1,22 +1,18 @@
-import { useContext } from 'react';
-import { UserContext } from '../../../context/UserContext';
+import React, { useEffect, useState } from 'react'
+import { useAuth } from '../../hooks/auth-context'
+function User_profile() {
 
-function UserProfile() {
-  const { user } = useContext(UserContext);
-
-  if (!user) {
-    return <p>Loading...</p>;
-  }
-
+  const { currentUser } = useAuth()
+  const { name, username,email,role } = currentUser
   return (
     <div>
-      <h1>User Profile</h1>
-      <p>Name: {user.name}</p>
-      <p>Email: {user.email}</p>
-      <p>Address: {user.address}</p>
-      {/* You can include any other user details here */}
+      <p>Name: {name}</p>
+      <p>Username: {username}</p>
+      <p>Email: {email}</p>
+      {role}
+      <p></p>
     </div>
-  );
+  )
 }
 
-export default UserProfile;
+export default User_profile
