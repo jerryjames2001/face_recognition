@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../../hooks/auth-context'
 import Nav1 from '../Nav/nav1'
+import Nav2 from '../Nav/nav2'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
 function Home () {
+  const { currentUser } = useAuth()
   useEffect(() => {
     AOS.init({ duration: 2500 })
   }, [])
@@ -15,7 +18,7 @@ function Home () {
       <video className='fixed top-0 left-0 w-full h-full object-cover z-[-1]' autoPlay muted loop>
         <source src='/src/assets/home_bg.mp4' type='video/mp4' />
       </video>
-      <Nav1 />
+      {currentUser ? <Nav2 /> : <Nav1 />}
       {/* Main Content */}
       <div className='relative z-10 min-h-screen flex flex-col justify-center items-center text-center text-white pt-20'>
         <h1 data-aos='fade-up' className='text-4xl font-bold'>
