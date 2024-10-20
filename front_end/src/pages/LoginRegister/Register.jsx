@@ -17,8 +17,6 @@ function Register() {
     e.preventDefault();
     try {
       await signUp(name, username, email, password);
-      toast.success('Sign up successful!');
-      toast.success('Please wait for admin approval');
     } catch (error) {
       console.log('Error signing up:', error);
       toast.error('Sign up failed. Please try again.');

@@ -8,6 +8,7 @@ import {
 } from "firebase/auth";
 import { db,auth } from "../firebase/firebase";  // Import Firestore instance
 import { doc, setDoc, getDoc } from "firebase/firestore";  // Firestore methods for document operations
+import toast, { Toaster } from "react-hot-toast";
 
 // Create the AuthContext
 const AuthContext = createContext(null);
@@ -64,6 +65,8 @@ export const AuthProvider = ({ children }) => {
 
       setCurrentUser({ ...user, role: role });
       setIsAuthenticated(true);
+      toast.success('Sign up successful!');
+      toast.success('Please wait for admin approval');
       navigate("/"); // Redirect after successful signup
     } catch (error) {
       setAuthError(error.message); // Set the error message
@@ -99,7 +102,7 @@ export const AuthProvider = ({ children }) => {
       await signOut(auth);
       setCurrentUser(null);
       setIsAuthenticated(false);
-      navigate("/"); // Redirect after successful sign-out
+      navigate("/login"); // Redirect after successful sign-out
     } catch (error) {
       setAuthError(error.message); // Handle sign-out errors
     }
@@ -120,6 +123,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={value}>
       {isLoading ? <div>Loading...</div> : children} {/* Show loading indicator */}
+      <Toaster position="top-center" /> {/* Toast notifications */}
     </AuthContext.Provider>
   );
 };

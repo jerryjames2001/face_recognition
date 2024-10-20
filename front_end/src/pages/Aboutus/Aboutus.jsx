@@ -1,11 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react'
 import MyProfile from '../profile/My_profile'
+import Nav1 from '../Nav/nav1'
 import { TfiEmail } from 'react-icons/tfi'
 
 function Aboutus () {
   return (
     <div className='text-center justify-center font-Poppins bg-gradient-to-br from-purple-500 to-[#800000]'>
+      <Nav1 />
       <div className=' pt-16 flex pb-5 group'>
         <section className='w-full md:w-1/6 h-auto pl-5 justify-center align-middle'>
           <img
