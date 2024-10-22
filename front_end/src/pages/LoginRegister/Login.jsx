@@ -20,7 +20,6 @@ function Login() {
     try {
       await signIn(email, password);
       toast.success('Login successful!', { duration: 4000 });
-      navigate('/profile');
     } catch (error) {
       console.error('Error signing in:', error);
       toast.error('Login failed. Please try again.', { duration: 4000 });

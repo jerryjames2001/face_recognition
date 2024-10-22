@@ -5,8 +5,8 @@ import { useAuth } from '../../hooks/auth-context'
 function nav2 () {
   const { signOut } = useAuth()
   return (
-    <div className='bg-transparent shadow-lg'>
-      <nav className='bg-gradient-to-r from-sky-500 to-sky-200 w-full'>
+    <div className='bg-transparent shadow-xl'>
+      <nav className=' w-full'>
         <div className='max-w-screen-xl mx-auto p-4 flex items-center justify-between'>
           {/* Logo Section */}
           <div className='flex items-start space-x-2'>

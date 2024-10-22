@@ -6,7 +6,7 @@ import {
   onAuthStateChanged,
   signOut
 } from "firebase/auth";
-import { db,auth } from "../firebase/firebase";  // Import Firestore instance
+import { db, auth } from "../firebase/firebase";  // Import Firestore instance
 import { doc, setDoc, getDoc } from "firebase/firestore";  // Firestore methods for document operations
 import toast, { Toaster } from "react-hot-toast";
 
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
         // Fetch the user's role from Firestore
         const userDoc = await getDoc(doc(db, "Users", user.uid));
         if (userDoc.exists()) {
-          setCurrentUser({ ...user, role: userDoc.data().role ,username:userDoc.data().username,name:userDoc.data().name });
+          setCurrentUser({ ...user, role: userDoc.data().role, username: userDoc.data().username, name: userDoc.data().name });
         } else {
           // Fallback if user doesn't have role defined, defaults to 'user'
           setCurrentUser({ ...user, role: 'user' });
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Sign Up Function with Firestore integration
-  const signUp = async (name, username,email, password, role = 'user') => {
+  const signUp = async (name, username, email, password, role = 'user') => {
     setAuthError(null); // Clear previous errors
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -63,10 +63,11 @@ export const AuthProvider = ({ children }) => {
         createdAt: new Date().toISOString(),
       });
 
-      setCurrentUser({ ...user, role: role });
-      setIsAuthenticated(true);
+      // setCurrentUser({ ...user, role: role });
+      setCurrentUser(null);
+      setIsAuthenticated(false); // Set auth state to false to prevent auto-login
       toast.success('Sign up successful!');
-      toast.success('Please wait for admin approval');
+      toast.success('Please wait for admin approval',{duration: 5000});
       navigate("/"); // Redirect after successful signup
     } catch (error) {
       setAuthError(error.message); // Set the error message
@@ -77,19 +78,20 @@ export const AuthProvider = ({ children }) => {
   const signIn = async (email, password) => {
     setAuthError(null); // Clear previous errors
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      // Fetch the user's role from Firestore
-      const userDoc = await getDoc(doc(db, "Users", user.uid));
-      if (userDoc.exists()) {
-        setCurrentUser({ ...user, role: userDoc.data().role });
-      } else {
-        setCurrentUser({ ...user, role: 'user' });
-      }
-
-      setIsAuthenticated(true);
-      navigate("/profile"); // Redirect after successful login
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+          const userDoc = await getDoc(doc(db, "Users", user.uid));
+        if (userDoc.exists()) {
+          setCurrentUser({ ...user, role: userDoc.data().role });
+        } else {
+          setCurrentUser({ ...user, role: 'user' });
+        }
+        setIsAuthenticated(true);
+        if(userDoc.data().role === "admin") {
+          navigate("/dashboard")
+        } else {
+          navigate("/profile"); // Redirect to profile page for regular users
+        }
     } catch (error) {
       setAuthError(error.message); // Set the error message
     }
