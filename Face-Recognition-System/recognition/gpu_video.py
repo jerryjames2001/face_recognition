@@ -7,17 +7,20 @@ cv.ocl.setUseOpenCL(True)
 print("OpenCL enabled:", cv.ocl.useOpenCL())
 
 # Load Haar cascades
-harr_cascade = cv.CascadeClassifier('recognition/harr_face.xml')
-eye_cascade = cv.CascadeClassifier('recognition/haarcascade_eye.xml')
+harr_cascade = cv.CascadeClassifier('Face-Recognition-System/recognition/harr_face.xml')
+eye_cascade = cv.CascadeClassifier('Face-Recognition-System/recognition/haarcascade_eye.xml')
 
 # Load trained model
 face_recognizer = cv.face.LBPHFaceRecognizer_create()
-face_recognizer.read('recognition/face_trained.yml')
+face_recognizer.read('Face-Recognition-System/recognition/face_trained.yml')
 
 # Load people labels
-people = []
-for i in os.listdir(r'D:\c programs\opencv\dataset'):
-    people.append(i)
+# Load saved labels from the training period
+people = np.load('Face-Recognition-System/recognition/labels.npy', allow_pickle=True)
+print("Loaded people labels:", people)
+# people = []
+# for i in os.listdir(r'D:\c programs\opencv\dataset'):
+#     people.append(i)
 
 def align_face(face, eyes):
     """Align face based on the positions of the eyes."""
