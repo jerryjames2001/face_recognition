@@ -1,10 +1,15 @@
-// import React from 'react'
+import React from 'react'
+import Suspect_form from './Suspect_form'
+import Nav from '../Nav/nav2'
 
-function Suspects () {
+function Suspects() {
   return (
     <div>
-      <h1>Suspects</h1>
+    <div><Nav/></div>
+    <div>
+      <Suspect_form />
     </div>
+  </div>
   )
 }
 
