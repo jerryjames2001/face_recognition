@@ -1,21 +1,16 @@
 import express from "express";
 import dotenv from "dotenv";
-import cors from "cors";
 import { connectDB } from "./config/databaseconnection.js";
 
+import cameraRouter from "./routes/camera.route.js";
 
 dotenv.config();
-
 const app = express();
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
+const PORT = process.env.PORT;
 app.use(express.json());
 
+app.use("/api/cameras", cameraRouter);
+
+
 connectDB();
-
-
-app.listen(3000, () => console.log("Example app is listening to port 3000"));
+app.listen(PORT, () => console.log("Example app is listening to port ", PORT));
