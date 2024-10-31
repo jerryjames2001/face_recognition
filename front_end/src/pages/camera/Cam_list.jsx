@@ -42,13 +42,14 @@ function Cam_list() {
       if (!response.ok) {
         throw new Error('Failed to connect to camera');
       }
+      else{
 
       const data = await response.json();
       console.log('Connected to camera:', data); // Debugging log
       toast.success(data.message); // Await toast message to ensure it displays
-
       // Update connection status for the specific camera
       setConnectedCameras(prevState => ({ ...prevState, [cameraId]: true }));
+      }
     } catch (error) {
       console.error('Error:', error);
       toast.error('Failed to connect to camera.');

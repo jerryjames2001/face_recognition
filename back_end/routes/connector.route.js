@@ -1,25 +1,30 @@
 import express from "express";
-import { exec } from "child_process";
+import { spawn } from "child_process";
 
 const router = express.Router();
 
 router.post("/", (req, res) => {
     const { ipaddress } = req.body;
 
-    // Run Python script and pass IP address as an argument
-    exec(`python ../Face-Recognition-System/recognition/logger.py ${ipaddress}`, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error connecting to camera: ${error.message}`);
-            return res.status(500).json({ error: "Failed to connect to camera" });
-        }
+    // Run initial connection check
+    const connectionProcess = spawn('python', ['../Face-Recognition-System/recognition/connection_check.py', ipaddress]);
 
-        if (stderr) {
-            console.error(`Script error: ${stderr}`);
-            return res.status(500).json({ error: "Python script error" });
-        }
+    // Handle output from the connection check
+    connectionProcess.on('close', (code) => {
+        if (code === 0) {  // Success
+            console.log("Connection successful, starting logger_main");
 
-        console.log(`Camera connected: ${stdout}`);
-        res.json({ message: "Camera connected successfully" });
+            // Start logger_main in detached mode
+            const mainProcess = spawn('python', ['../Face-Recognition-System/recognition/logger.py', ipaddress], {
+                detached: true,
+                stdio: 'ignore'
+            });
+            mainProcess.unref();
+
+            res.json({ message: "Camera connected and logging started" });
+        } else {  // Failure
+            res.status(500).json({ message: "Failed to connect to camera" });
+        }
     });
 });
 
