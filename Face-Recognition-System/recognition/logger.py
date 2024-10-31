@@ -1,8 +1,19 @@
 import os
+import argparse
 from datetime import datetime, timedelta
 import cv2 as cv
 import numpy as np
 from pymongo import MongoClient
+
+print("starting python script")
+# Parse arguments
+parser = argparse.ArgumentParser(description="Connect to camera IP address")
+parser.add_argument("ipaddress", type=str, help="IP address of the camera")
+args = parser.parse_args()
+camera_ip = args.ipaddress
+camera_url = f'http://{camera_ip}/video'
+
+
 
 # Connect to MongoDB
 client = MongoClient('mongodb://localhost:27017/')  # Update with your MongoDB URI if needed
@@ -12,28 +23,29 @@ logs_collection = db['logs']  # Collection for logs
 # Define the directory to save log images
 log_image_dir = r'D:\face_recognition\Face-Recognition-System\logs'
 os.makedirs(log_image_dir, exist_ok=True)  # Create the directory if it doesn't exist
+print("mongodb connection and log acess sucessfull")
 
 # Enable OpenCL
 cv.ocl.setUseOpenCL(True)
 print("OpenCL enabled:", cv.ocl.useOpenCL())
 
 # Load Haar cascades
-harr_cascade = cv.CascadeClassifier('Face-Recognition-System/recognition/harr_face.xml')
-eye_cascade = cv.CascadeClassifier('Face-Recognition-System/recognition/haarcascade_eye.xml')
+harr_cascade = cv.CascadeClassifier(r'D:\face_recognition\Face-Recognition-System\recognition\harr_face.xml')
+eye_cascade = cv.CascadeClassifier(r'D:\face_recognition\Face-Recognition-System\recognition\haarcascade_eye.xml')
 
 # Load trained model
 face_recognizer = cv.face.LBPHFaceRecognizer_create()
-face_recognizer.read('Face-Recognition-System/recognition/face_trained.yml')
+face_recognizer.read(r'D:\face_recognition\Face-Recognition-System\recognition\face_trained.yml')
 
 # Load saved labels from the training period
-people = np.load('Face-Recognition-System/recognition/labels.npy', allow_pickle=True)
-print("Loaded people labels:", people)
+people = np.load(r'D:\face_recognition\Face-Recognition-System\recognition\labels.npy', allow_pickle=True)
+# print("Loaded people labels:", people)
 
 # people = []
 # for i in os.listdir(r'D:\c programs\opencv\dataset'):
 #     people.append(i)
 
-capture = cv.VideoCapture(0)
+capture = cv.VideoCapture(camera_url)
 
 while True:
     isTrue, frame = capture.read()
@@ -72,7 +84,7 @@ while True:
                     'suspect_id': label,
                     'screenshot': screenshot_path,  # Store the path to the saved image
                     'time': now,
-                    'cam_id': 1  # Replace with your cam ID logic
+                    'cam_id': camera_ip  # Replace with your cam ID logic
                 }
                 logs_collection.insert_one(log_entry)
                 print(f"Logged: {log_entry}")

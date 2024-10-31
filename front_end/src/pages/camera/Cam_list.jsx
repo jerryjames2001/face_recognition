@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { MdDelete } from "react-icons/md";
+import { PiPlugsConnectedLight } from "react-icons/pi";
 import { VscDebugDisconnect } from "react-icons/vsc";
 
 function Cam_list() {
   const [cameras, setCameras] = useState([]);
+  const [connectedCameras, setConnectedCameras] = useState({}); // Track connection status for each camera by ID
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch cameras from the API
   useEffect(() => {
     const fetchCameras = async () => {
       try {
@@ -16,19 +17,70 @@ function Cam_list() {
           throw new Error('Failed to fetch cameras');
         }
         const data = await response.json();
-        setCameras(data.data); 
+        setCameras(data.data);
       } catch (error) {
         console.error('Error:', error);
-        toast.error('Failed to fetch cameras.'); // Show error message
+        toast.error('Failed to fetch cameras.');
       } finally {
-        setIsLoading(false); // Reset loading state
+        setIsLoading(false);
       }
     };
 
     fetchCameras();
   }, []);
 
-  // Delete camera function
+  const connectCamera = async (ipaddress, cameraId) => {
+    try {
+      const response = await fetch('/api/connect-camera', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ipaddress })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to connect to camera');
+      }
+
+      const data = await response.json();
+      console.log('Connected to camera:', data); // Debugging log
+      toast.success(data.message); // Await toast message to ensure it displays
+
+      // Update connection status for the specific camera
+      setConnectedCameras(prevState => ({ ...prevState, [cameraId]: true }));
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Failed to connect to camera.');
+    }
+  };
+
+  const disconnectCamera = async (ipaddress, cameraId) => {
+    try {
+      const response = await fetch('/api/disconnect-camera', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ipaddress })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to disconnect from camera');
+      }
+
+      const data = await response.json();
+      console.log('Disconnected from camera:', data); // Debugging log
+      await toast.success(data.message); // Await toast message to ensure it displays
+
+      // Update connection status for the specific camera
+      setConnectedCameras(prevState => ({ ...prevState, [cameraId]: false }));
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Failed to disconnect from camera.');
+    }
+  };
+
   const deleteCamera = async (cameraId) => {
     if (window.confirm('Are you sure you want to delete this camera?')) {
       try {
@@ -38,7 +90,6 @@ function Cam_list() {
         if (!response.ok) {
           throw new Error('Failed to delete camera');
         }
-        // Update state to remove the deleted camera
         setCameras((prevCameras) => prevCameras.filter(camera => camera._id !== cameraId));
         toast.success('Camera deleted successfully.');
       } catch (error) {
@@ -48,7 +99,6 @@ function Cam_list() {
     }
   };
 
-  // Render loading state or camera list
   return (
     <div className="overflow-x-auto px-4 rounded-xl">
       {isLoading ? (
@@ -76,7 +126,16 @@ function Cam_list() {
                   <button className="text-red-500" onClick={() => deleteCamera(camera._id)}>
                     <MdDelete size={30} />
                   </button>
-                  <button className="text-sky-600 ml-4"><VscDebugDisconnect size={30}/></button>
+                  {/* Connect/Disconnect buttons */}
+                  {connectedCameras[camera._id] ? (
+                    <button className="text-sky-600 ml-4" onClick={() => disconnectCamera(camera.ipaddress, camera._id)}>
+                      <VscDebugDisconnect size={30} />
+                    </button>
+                  ) : (
+                    <button className="text-sky-600 ml-4" onClick={() => connectCamera(camera.ipaddress, camera._id)}>
+                      <PiPlugsConnectedLight size={30} />
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
