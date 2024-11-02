@@ -70,7 +70,7 @@ function SuspectForm() {
   };
 
   return (
-    <div className="flex justify-center items-start pt-2 min-h-screen bg-gradient-to-r from-blue-200 to-purple-300">
+    <div className="flex justify-center items-start pt-2 ">
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-lg rounded-lg p-6 w-full max-w-5xl"
