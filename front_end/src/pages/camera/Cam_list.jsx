@@ -8,6 +8,7 @@ function Cam_list() {
   const [cameras, setCameras] = useState([]);
   const [connectedCameras, setConnectedCameras] = useState({}); // Track connection status for each camera by ID
   const [isLoading, setIsLoading] = useState(true);
+  const [activeVideoFeed, setActiveVideoFeed] = useState(null); // Track the active camera IP
 
   useEffect(() => {
     const fetchCameras = async () => {
@@ -49,6 +50,7 @@ function Cam_list() {
       toast.success(data.message); // Await toast message to ensure it displays
       // Update connection status for the specific camera
       setConnectedCameras(prevState => ({ ...prevState, [cameraId]: true }));
+      setActiveVideoFeed(ipaddress); // Set the active camera IP to display the feed
       }
     } catch (error) {
       console.error('Error:', error);
@@ -76,6 +78,7 @@ function Cam_list() {
 
       // Update connection status for the specific camera
       setConnectedCameras(prevState => ({ ...prevState, [cameraId]: false }));
+      setActiveVideoFeed(null); // Remove the active video feed
     } catch (error) {
       console.error('Error:', error);
       toast.error('Failed to disconnect from camera.');
@@ -105,6 +108,7 @@ function Cam_list() {
       {isLoading ? (
         <p>Loading cameras...</p>
       ) : (
+        <>
         <table className="min-w-full bg-white border-none text-center rounded-xl">
           <thead>
             <tr>
@@ -142,6 +146,18 @@ function Cam_list() {
             ))}
           </tbody>
         </table>
+
+        {/* Display video feed in a div with specified size */}
+        {activeVideoFeed && (
+            <div className="video-feed-container mt-4">
+              <h3>Video Feed</h3>
+              <div style={{ width: '640px', height: '360px', overflow: 'hidden', border: '1px solid #ccc' }}>
+                <video src={`http://${activeVideoFeed}`} controls autoPlay style={{ width: '100%', height: '100%' }} />
+              </div>
+            </div>
+          )}
+        </>
+
       )}
     </div>
   );

@@ -1,5 +1,7 @@
 import React from 'react'
 import Adminnav from './Adminnav'
+import Cam_form from '../camera/Cam_form'
+import Cam_list from '../camera/Cam_list';
 
 function CameraManagement() {
   return (
@@ -10,9 +12,14 @@ function CameraManagement() {
       </div>
 
       {/* Right Side: Content */}
-      <div className="flex-grow p-5 bg-gray-100">
-        <h1 className="text-3xl font-bold mb-4">Camera Management</h1>
-        <p>Here you can add, update, or view IP cameras and their locations.</p>
+      <div className="flex-grow p-5 bg-sky-100">
+        <h1 className="text-3xl font-bold mb-4 text-center">Camera Management</h1>
+        <div>
+          <Cam_form/>
+        </div>
+        <div>
+          <Cam_list/>
+        </div>
         </div>
     </div>
   )

@@ -20,7 +20,7 @@ function Adminnav() {
                     <Link to="/camera" className="block">Camera Management</Link>
                 </li>
                 <li className="hover:bg-gray-700 p-3 py-8">
-                    <Link to="/logs" className="block">Logs</Link>
+                    <Link to="/adminlogs" className="block">Logs</Link>
                 </li>
                 <li className="hover:bg-gray-700 p-3 py-8 font-bold text-lg"
                 onClick={signOut}>
