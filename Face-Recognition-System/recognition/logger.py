@@ -21,7 +21,7 @@ db = client['mini_project']
 logs_collection = db['logs']
 
 # Directory for saving log images
-log_image_dir = r'D:\face_recognition\Face-Recognition-System\logs'
+log_image_dir = r'D:\face_recognition\back_end\public\logs'
 os.makedirs(log_image_dir, exist_ok=True)
 
 # Enable OpenCL
@@ -60,10 +60,14 @@ while True:
             })
 
             if existing_log is None:
-                screenshot_path = os.path.join(log_image_dir, f'{name}_{now.strftime("%Y%m%d_%H%M%S")}.jpg')
-                cv.imwrite(screenshot_path, frame[y:y+h, x:x+w])
-                log_entry = {'suspect_id': label, 'screenshot': screenshot_path, 'time': now, 'cam_id': camera_ip}
+                screenshot_filename = f'{name}_{now.strftime("%Y%m%d_%H%M%S")}.jpg'
+                screenshot_path = os.path.join(screenshot_filename)  # Change this line
+                cv.imwrite(os.path.join(log_image_dir, screenshot_filename), frame[y:y+h, x:x+w])
+                log_entry = {
+                    'suspect_id': label,'screenshot': screenshot_path,'time': now,'cam_id': camera_ip
+                    }
                 logs_collection.insert_one(log_entry)
+
         else:
             cv.putText(frame, 'Unknown', (x, y - 10), cv.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
 

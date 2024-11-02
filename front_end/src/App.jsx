@@ -4,7 +4,7 @@ import About from './pages/Aboutus/Aboutus';
 import Login from './pages/LoginRegister/Login';
 import Register from './pages/LoginRegister/Register';
 import User_profile from './pages/profile/User_profile';
-import Logs from './pages/logs';
+import Logs from  './pages/logs';
 import Camerauser from './pages/camera/Camera';
 import Suspects from './pages/Suspects/Suspects';
 
