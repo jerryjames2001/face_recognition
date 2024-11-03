@@ -16,11 +16,11 @@ face_recognizer.read('Face-Recognition-System/recognition/face_trained.yml')
 
 # Load people labels
 # Load saved labels from the training period
-people = np.load('Face-Recognition-System/recognition/labels.npy', allow_pickle=True)
-print("Loaded people labels:", people)
-# people = []
-# for i in os.listdir(r'D:\c programs\opencv\dataset'):
-#     people.append(i)
+# people = np.load('Face-Recognition-System/recognition/labels.npy', allow_pickle=True)
+# print("Loaded people labels:", people)
+people = []
+for i in os.listdir(r'D:\c programs\opencv\dataset'):
+    people.append(i)
 
 def align_face(face, eyes):
     """Align face based on the positions of the eyes."""

@@ -7,12 +7,13 @@ cv.ocl.setUseOpenCL(True)
 print("OpenCL enabled:", cv.ocl.useOpenCL())
 
 # Load Haar cascades
-harr_cascade = cv.CascadeClassifier('recognition/harr_face.xml')
-eye_cascade = cv.CascadeClassifier('recognition/haarcascade_eye.xml')
+harr_cascade = cv.CascadeClassifier(r'D:\face_recognition\Face-Recognition-System\recognition\harr_face.xml')
+eye_cascade = cv.CascadeClassifier(r'D:\face_recognition\Face-Recognition-System\recognition\haarcascade_eye.xml')
 
 # Load trained model
 face_recognizer = cv.face.LBPHFaceRecognizer_create()
-face_recognizer.read('recognition/face_trained.yml')
+face_recognizer.read(r'D:\face_recognition\Face-Recognition-System\recognition\face_trained.yml')
+
 
 # Load people labels
 people = []
@@ -60,7 +61,7 @@ def rescale_frame(frame, scale):
     return cv.resize(frame, dimensions, interpolation=cv.INTER_AREA)
 
 capture = cv.VideoCapture(0)
-ip="http://192.168.120.70:8080/video"
+ip="http://100.85.144.109:8080/video"
 capture.open(ip)
 
 
