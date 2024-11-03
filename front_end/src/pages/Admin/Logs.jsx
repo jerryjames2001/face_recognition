@@ -38,10 +38,10 @@ function Logs() {
           throw new Error('Failed to delete log');
         }
         setLogs((prevLogs) => prevLogs.filter(log => log._id !== logId));
-        toast.success('Camera deleted successfully.');
+        toast.success('Log deleted successfully.');
       } catch (error) {
         console.error('Error:', error);
-        toast.error('Failed to delete camera.');
+        toast.error('Failed to delete log');
       }
     }
   };
