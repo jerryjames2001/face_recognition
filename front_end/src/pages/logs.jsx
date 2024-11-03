@@ -33,7 +33,7 @@ function logs() {
       <div>
         <Nav2 />
       </div>
-      <div className="log-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+      <div className="log-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
         {logs.map(log => (
           <div key={log._id} className="bg-white shadow-lg rounded-lg p-4">
             <h3 className="text-lg font-bold text-center">{log.suspectDetails?.name || 'Unknown'}</h3>
@@ -44,16 +44,25 @@ function logs() {
             <p><strong>Camera ID:</strong> {log.cam_id}</p>
 
 
-            {log.screenshot && (
-             <img
-             src={`${backendURL}/logs/${log.screenshot}`} // Assuming backendURL is set to the correct backend address
-             alt={`Log Screenshot ${log.screenshot}`}
-             className="w-full h-52 object-cover mt-4 rounded-md"
-           />
-           
-            
-            
-            )}
+            <div className="flex flex-row justify-center mt-4">
+              {/* Suspect Image 
+              {log.suspectDetails?.image?.data && (
+                <img
+                  src={log.suspectDetails.image.data}
+                  alt={`${log.suspectDetails.name}'s image`}
+                  className="w-40 h-40 object-cover rounded-md border-2 border-gray-300 mb-2" // Smaller size for the suspect image
+                />
+              )}*/}
+
+              {/* Log Screenshot */}
+              {log.screenshot && (
+                <img
+                  src={`${backendURL}/logs/${log.screenshot}`}
+                  alt={`Log Screenshot ${log.screenshot}`}
+                  className="w-40 h-40 object-cover rounded-md border-2 border-gray-300"
+                />
+              )}
+            </div>
 
 
           </div>

@@ -24,3 +24,17 @@ export const getLogsWithSuspectDetails = async (req, res) => {
         res.status(500).json({ error: "Failed to retrieve logs" });
     }
 };
+
+export const deleteLog = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const log = await Log.findByIdAndDelete(id);
+        if (!log) {
+            return res.status(404).json({ error: "Log not found" });
+        }
+        res.status(200).json({ message: "Log deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting log:", error);
+        res.status(500).json({ error: "Failed to delete log" });
+    }
+};
