@@ -144,3 +144,5 @@ Special thanks to the open-source community and to the authors of the packages a
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B0B615YOK7)
 
 </div>
+
+For detailed documentation, like college records support me on ko-fi and just messagge me on ko-fi chat. I will provide you the detailed documentation of this project (word file).
