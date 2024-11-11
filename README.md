@@ -139,10 +139,8 @@ This project is licensed under the [Hippocratic License HL3-CL-SOC-SV](https://f
 Special thanks to the open-source community and to the authors of the packages and libraries used in this project.
 
 ---
-
 <div align="center">
-<a href="https://ko-fi.com/jerryjames" style="background-color:#00b9ef; color:white; padding:10px 20px; text-decoration:none; border-radius:5px; font-weight:bold;">
-<img height=30 background=transparent src="https://ceciliainoceano.com/wp-content/uploads/2022/01/icon-256x256-1.png" alt="Ko-fi Logo" style="vertical-align:middle;">
-Support Me on Ko-fi
-</a>
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B0B615YOK7)
+
 </div>
