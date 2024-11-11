@@ -40,22 +40,25 @@ This Face Recognition System is designed to identify and log faces in real-time 
 <div align="center">
 
 ### Home Page
-![Home page (1)](https://github.com/user-attachments/assets/c0834f21-23ec-47b6-9b2e-10c769ca6fc7)
+<img src="./Images/Home page.gif" alt="home page gif">
 
 ### Detection Logs
-![Logs](https://github.com/user-attachments/assets/your-logs-image)
+<img src="./Images/logs.png" alt="detection logs" width=500>
+
+### Live camera feed
+<img src="./Images/live_cam.png" alt="live camera connector" width=500>
 
 ### Admin Dashboard
-![Admin Dashboard](https://github.com/user-attachments/assets/your-dashboard-image)
+<img src="./Images/admin.png" alt="Admin dashboard" width=500>
 
 </div>
 
 ## Technologies Used
-- **Frontend**: React, Tailwind CSS
+- **Frontend**: React, Tailwind CSS🎨
 - **Backend**: Node.js, Express.js, MongoDB
 - **Face Recognition**: OpenCV, LBPH Algorithm
 - **GPU Acceleration**: OpenCL
-- **Other Tools**: Python for machine learning, JSON Web Token (JWT) for authentication
+- **Other Tools**: Python for machine learning, Firebase🔥 for authentication
 
 ## Installation
 ### Prerequisites
@@ -75,33 +78,42 @@ This Face Recognition System is designed to identify and log faces in real-time 
     - Navigate to the `backend` folder.
     - Install dependencies:
         ```bash
-        npm install
+        npm init -y
         ```
-    - Set up your `.env` file with MongoDB connection details and JWT secrets.
+    - Set up your `.env` file with MongoDB connection details.
 
 3. **Frontend Setup**:
     - Navigate to the `frontend` folder.
     - Install dependencies:
-        ```bash
-        npm install
-        ```
+<pre style=" color:skyblue; padding: 10px; border-radius: 5px;">
+<code>
+npm create vite@latest .
+npm install
+</code>
+</pre>
+
     - Configure frontend environment variables as needed.
 
 4. **Run the Application**:
     - Start the backend server:
         ```bash
-        npm run start
+        node index.js
+        ```
+        or use nodemon for live reloading:
+        ```bash
+        npm start
         ```
     - Start the frontend server:
         ```bash
-        npm run start
+        npm run dev
         ```
 
 5. **Run Face Recognition Script**:
     - Ensure OpenCV is installed with OpenCL support.
     - Run the face detection script:
         ```bash
-        python face_detection.py
+        cd Face-Recognition-System/recognition
+        python gpu_video.py
         ```
 
 ## Usage
@@ -129,5 +141,8 @@ Special thanks to the open-source community and to the authors of the packages a
 ---
 
 <div align="center">
-If you find this project helpful, feel free to [buy me a coffee!](https://www.buymeacoffee.com/yourusername)
+<a href="https://ko-fi.com/jerryjames" style="background-color:#00b9ef; color:white; padding:10px 20px; text-decoration:none; border-radius:5px; font-weight:bold;">
+<img height=30 background=transparent src="https://ceciliainoceano.com/wp-content/uploads/2022/01/icon-256x256-1.png" alt="Ko-fi Logo" style="vertical-align:middle;">
+Support Me on Ko-fi
+</a>
 </div>
